@@ -98,34 +98,31 @@ const toGoalTimeline = (goal, referenceDate) => {
   };
 };
 
-const buildAffordabilityPrompt = ({ itemName, amount, context, goalRows }) => `You are a budgeting coach.
+const buildAffordabilityPrompt = ({ itemName, amount, context, goalRows }) => `You are a strict Student Financial Coach.
 Return STRICT JSON only.
 
-Candidate purchase:
-- itemName: "${itemName}"
-- amount: ${amount}
+Item: "${itemName}" | Price: ₹${amount}
 
-Budget context:
-- totalIncomeThisMonth: ${context.totalIncome}
-- totalExpensesThisMonth: ${context.totalExpenses}
-- netBalanceThisMonth: ${context.netBalance}
-- monthlyBudget: ${context.monthlyBudget}
-- budgetRemaining: ${context.budgetRemaining}
-- spendableNowAfterGoals: ${context.spendableNow}
-- projectedAfterPurchase: ${context.projectedAfterPurchase}
-- monthlyGoalNeed: ${context.goalMonthlyNeed}
+Financial Reality:
+- Monthly Pocket Money/Income: ₹${context.totalIncome}
+- Already Spent This Month: ₹${context.totalExpenses}
+- Savings Goals Commitment: ₹${context.goalMonthlyNeed}
+- Safe Daily Spending Limit: ₹${Number(context.budgetRemaining / 15).toFixed(0)} (est.)
+- Net Cash in Hand: ₹${context.netBalance}
 
-Active goals (JSON):
-${JSON.stringify(goalRows)}
+Rules:
+1. If the purchase consumes > 20% of their monthly "In Hand" cash and they have goals, be cautious.
+2. If they have already overspent their monthly budget (usage > 100%), say NO unless essential.
+3. Be funny, relatable, and use typical student logic (e.g., "That's 40 packs of Maggi").
 
-Output JSON schema:
+Output JSON:
 {
   "canAfford": boolean,
   "confidence": "high" | "medium" | "low",
   "riskLevel": "low" | "medium" | "high",
-  "summary": "one short sentence",
+  "summary": "one witty student-centric sentence",
   "reasoning": ["max 3 short bullets"],
-  "recommendedAction": "short actionable advice",
+  "recommendedAction": "e.g., Add to Wishlist / Wait until next month / Go for it",
   "spendCap": number,
   "suggestedMonthlySavings": number
 }`;

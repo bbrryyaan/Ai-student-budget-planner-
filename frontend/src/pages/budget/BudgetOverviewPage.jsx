@@ -46,14 +46,34 @@ const BudgetOverviewPage = () => {
           { label: "Pocket Money", value: money(stats.totalIncome), icon: TrendingUp, color: "text-emerald-300" },
           { label: "Spent", value: money(stats.totalExpenses), icon: TrendingDown, color: "text-red-300" },
           { label: "In Wallet", value: money(stats.netBalance), icon: Wallet, color: "text-cyan-300" },
-          { label: "Safe to Spend Today", value: money(dailySafeSpend), icon: Sparkles, color: "text-fuchsia-300", highlight: true },
-          { label: "Month Goal Left", value: money(budgetLeft), icon: PiggyBank, color: "text-indigo-300" },
+          { 
+            label: "Safe to Spend Today", 
+            value: money(dailySafeSpend), 
+            icon: Sparkles, 
+            color: "text-fuchsia-300", 
+            highlight: true,
+            info: "Formula: (Budget Left) / (Days Remaining). Adjusted daily to keep you on track."
+          },
+          { 
+            label: "Month Goal Left", 
+            value: money(budgetLeft), 
+            icon: PiggyBank, 
+            color: "text-indigo-300",
+            info: "Remaining portion of your set monthly limit. Negative means overspent."
+          },
         ].map((card) => (
           <article 
             key={card.label} 
-            className={`rounded-2xl border ${card.highlight ? 'border-fuchsia-500/30 bg-fuchsia-500/10' : 'border-slate-800 bg-slate-900/80'} p-4 transition-transform hover:scale-[1.02]`}
+            className={`group relative rounded-2xl border ${card.highlight ? 'border-fuchsia-500/30 bg-fuchsia-500/10' : 'border-slate-800 bg-slate-900/80'} p-4 transition-transform hover:scale-[1.02]`}
           >
-            <card.icon size={18} className={card.color} />
+            <div className="flex justify-between items-start">
+              <card.icon size={18} className={card.color} />
+              {card.info && (
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-[9px] text-slate-300 px-2 py-1 rounded absolute top-2 right-2 max-w-[120px] pointer-events-none z-20 shadow-xl border border-slate-700">
+                  {card.info}
+                </div>
+              )}
+            </div>
             <p className="text-xs uppercase tracking-[0.18em] text-slate-500 font-semibold mt-2">{card.label}</p>
             <p className={`text-2xl font-black mt-1 ${card.highlight ? 'text-fuchsia-100' : 'text-white'}`}>{card.value}</p>
             {card.highlight && <p className="text-[10px] text-fuchsia-400 font-bold mt-1 uppercase tracking-tight">Based on {daysRemaining} days left</p>}

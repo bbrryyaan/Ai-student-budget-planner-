@@ -46,6 +46,7 @@ import {
   updateTransaction,
   importTransactionsFromPDF,
 } from "../controllers/transaction.controller.js";
+import { addToWishlist, listWishlist, removeFromWishlist, markAsBought } from "../controllers/wishlist.controller.js";
 import { convertCurrency } from "../controllers/settings.controller.js";
 
 // Import Middleware
@@ -107,6 +108,12 @@ router.post("/goals", authMiddleware, createGoal);
 router.patch("/goals/:goalId", authMiddleware, updateGoal);
 router.post("/goals/:goalId/contribute", authMiddleware, contributeToGoal);
 router.delete("/goals/:goalId", authMiddleware, deleteGoal);
+
+// Wishlist Routes
+router.get("/wishlist", authMiddleware, listWishlist);
+router.post("/wishlist", authMiddleware, addToWishlist);
+router.patch("/wishlist/:id/bought", authMiddleware, markAsBought);
+router.delete("/wishlist/:id", authMiddleware, removeFromWishlist);
 
 // Legacy expense routes kept temporarily for compatibility.
 router.post("/expenses/add", authMiddleware, createSmartExpense);
