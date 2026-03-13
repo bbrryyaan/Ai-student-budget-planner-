@@ -97,13 +97,19 @@ export const handleBuddyChat = async (req, res) => {
     }));
     
     // Minify recent transactions to avoid token bloat
-    const recentTxns = history.slice(0, 25).map(t => ({
+    const recentTxns = history.slice(0, 20).map(t => ({
       date: t.transactionDate ? t.transactionDate.toISOString().split('T')[0] : 'N/A',
       desc: t.description,
       amount: t.amount,
-      type: t.type === 'expense' ? 'EXP' : 'INC',
       cat: t.category
     }));
+
+    // Pre-calculate "Balance Killers" (Top 3 highest expenses in the last 100 txns)
+    const balanceKillers = history
+      .filter(t => t.type === 'expense')
+      .sort((a,b) => b.amount - a.amount)
+      .slice(0, 3)
+      .map(t => `${t.description} (₹${t.amount.toFixed(2)})`);
 
     // Recent chat history to give context
     const previousMessages = chatRecord 
@@ -138,23 +144,25 @@ export const handleBuddyChat = async (req, res) => {
       **YOUR MISSION-CRITICAL RULES:**
 
       1. **TONE:** Be a super positive and encouraging "buddy", a college-friendly peer. Use "we" and "our". Use emojis.
-          - Bad: "You spent too much on Food."
-          - Good: "Whoa, it looks like our food spending was a bit high this month! Let's see if we can optimize that together! 🍔"
-
+      
       2. **BE HYPER-SPECIFIC & ACTIONABLE:** Do not give generic advice. Use the EXACT numbers from the insights above.
-          - Bad: "Try to save more for your laptop."
           - Good: "I see we have ₹${discretionaryIncome.toFixed(2)} left over. What if we put 20% of that (₹${(Math.max(0, discretionaryIncome) * 0.2).toFixed(2)}) straight into your '${goals.length > 0 ? goals[0].title : 'savings goal'}'?"
 
-      3. **THE "BUDDY CHALLENGE":** Most responses should end with a single, clear, actionable challenge for the user. Keep it brief and numeric.
+      3. **THE "BALANCE KILLER" RULE (IMPORTANT):** If the user asks why their balance is low, what brought it down, or what happened to their money, YOU MUST look at the 'BALANCE KILLERS' list below and name the top 2-3 items specifically. NEVER ask the user to "find expenses that brought it down". You do the work!
 
-      4. **STRICT BREVITY:** No greetings like "Hey there buddy" every time. Answer directly in 1-2 sentences. End with a 1-sentence "Buddy Challenge". Format: [Answer/Insight]. [Challenge]. No more than 30-40 words total. Use markdown for numbers.
+      4. **STRICT BREVITY:** No greetings like "Hey there buddy" every time. Answer directly in 2-3 sentences max. End with a 1-sentence "Buddy Challenge". Format: [Answer/Insight]. [Challenge]. Use markdown for numbers.
       
       ---
-      RECENT EXACT TRANSACTIONS (Max 15):
+      BALANCE KILLERS (Highest Recent Spending):
+      ${balanceKillers.join(', ')}
+      ---
+
+      ---
+      RECENT TRANSACTIONS (Chronological):
       ${JSON.stringify(recentTxns)}
       ---
       
-      Respond now (STRICTLY CONCISE):
+      Respond now (STRICTLY CONCISE & DATA-DRIVEN):
     `;
 
     const result = await model.generateContent(prompt);

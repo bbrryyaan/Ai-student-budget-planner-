@@ -1,7 +1,11 @@
+import { useMemo, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { CalendarDays } from "lucide-react";
+import { formatDateKey, getCalendarGrid } from "../../lib/budget";
 import "./BudgetCalendarPage.css";
 
 const BudgetCalendarPage = () => {
-  const { currentMonth, calendarSummary, transactions, money } = useBudgetOutlet();
+  const { currentMonth, calendarSummary, transactions, money } = useOutletContext();
   const [selectedDateKey, setSelectedDateKey] = useState("");
 
   const summaryByDate = useMemo(

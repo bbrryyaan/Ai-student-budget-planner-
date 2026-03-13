@@ -109,6 +109,7 @@ Financial Reality:
 - Savings Goals Commitment: ₹${context.goalMonthlyNeed}
 - Safe Daily Spending Limit: ₹${Number(context.budgetRemaining / 15).toFixed(0)} (est.)
 - Net Cash in Hand: ₹${context.netBalance}
+- Recent Big Expenses (Spending Barriers): ${context.spendingBarriers}
 
 Rules:
 1. If the purchase consumes > 20% of their monthly "In Hand" cash and they have goals, be cautious.
@@ -356,6 +357,13 @@ export const getCanIAffordInsight = async (req, res) => {
     const spendableAtDeadline = Math.max(budgetRemaining - reservedForSurvival - goalMonthlyNeed, 0);
     const spendableNow = totalWallet; 
 
+    // Find top 3 biggest expenses this month to show as "barriers"
+    const spendingBarriers = transactions
+      .filter(t => t.type === 'expense')
+      .sort((a, b) => b.amount - a.amount)
+      .slice(0, 3)
+      .map(t => `${t.description} (₹${t.amount.toFixed(0)})`);
+
     const projectedAfterPurchase = totalWallet - amount;
     const canAfford = projectedAfterPurchase >= 0;
     
@@ -371,13 +379,13 @@ export const getCanIAffordInsight = async (req, res) => {
       riskLevel,
       summary: canAfford
         ? (planOverrun > 0 
-            ? "You have the cash in your wallet, but this significantly exceeds your planned budget surplus and dips into survival funds."
+            ? `You have the cash, but your big spends on ${spendingBarriers.slice(0,1)} already pushed us close to the limit.`
             : "This is a safe purchase! it fits within your monthly balance and protects your goals.")
-        : "This purchase is impossible right now without external funding or major debt.",
+        : `This purchase is impossible right now. Recent big hits like ${spendingBarriers.slice(0,2).join(' and ')} left our wallet too light.`,
       reasoning: [
         `Total Liquidity: ${roundToTwo(totalWallet)}`,
-        `Reserved for Survival: ${roundToTwo(reservedForSurvival)}`,
-        `Budget Plan Overrun: ${roundToTwo(planOverrun)}`,
+        `Recent Big Spend: ${spendingBarriers[0] || 'None'}`,
+        `Budget Gap: ${roundToTwo(planOverrun)}`,
       ],
       recommendedAction: canAfford 
         ? (planOverrun > 0 ? "Consider waiting or using the Wishlist Radar." : "Go for it!") 
@@ -398,6 +406,7 @@ export const getCanIAffordInsight = async (req, res) => {
         spendableNow: roundToTwo(totalWallet),
         projectedAfterPurchase: roundToTwo(projectedAfterPurchase),
         goalMonthlyNeed: roundToTwo(goalMonthlyNeed),
+        spendingBarriers: spendingBarriers.join(', '),
       },
       goalRows,
       heuristic,
