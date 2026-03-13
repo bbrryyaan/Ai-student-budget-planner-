@@ -24,6 +24,8 @@ import {
   Users,
   HandCoins,
   ShieldAlert,
+  X,
+  Menu,
 } from "lucide-react";
 import api from "../../lib/api";
 import { formatMonthKey, monthTitle } from "../../lib/budget";
