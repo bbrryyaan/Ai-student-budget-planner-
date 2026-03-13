@@ -221,23 +221,23 @@ const BudgetTransactionsPage = () => {
 
       <SmartInput onTransactionAdded={refreshData} entryMode={entryMode} />
 
-      <section className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:p-5">
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-          <p className="font-semibold text-white">Transactions</p>
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="relative">
+      <section className="rounded-2xl border border-slate-800 bg-slate-900/80 p-3 sm:p-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <p className="font-bold text-white text-sm sm:text-base">Transactions</p>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <div className="relative flex-1 sm:flex-initial">
               <Filter size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
               <input
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
-                placeholder="Search"
-                className="bg-slate-950 border border-slate-700 rounded-xl py-2 pl-8 pr-3 text-sm w-44"
+                placeholder="Search..."
+                className="bg-slate-950 border border-slate-700 rounded-xl py-2 pl-8 pr-3 text-xs sm:text-sm w-full sm:w-44 outline-none focus:border-cyan-500/50"
               />
             </div>
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="bg-slate-950 border border-slate-700 rounded-xl py-2 px-3 text-sm text-white"
+              className="bg-slate-950 border border-slate-700 rounded-xl py-2 px-3 text-xs sm:text-sm text-white outline-none focus:border-cyan-500/50"
             >
               {typeOptions.map((o) => <option key={o} value={o}>{o}</option>)}
             </select>

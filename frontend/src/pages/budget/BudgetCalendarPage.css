@@ -1,0 +1,29 @@
+/* Mobile-first calendar overrides */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+@media (max-width: 640px) {
+  .calendar-day-btn {
+    height: 60px !important;
+    padding: 2px !important;
+  }
+  
+  .calendar-day-number {
+    font-size: 9px !important;
+  }
+  
+  .calendar-day-stats {
+    display: none !important; /* Hide income/expense labels on very small screens to avoid overflow */
+  }
+  
+  .calendar-day-dot {
+    display: block !important;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    margin-top: 2px;
+  }
+}

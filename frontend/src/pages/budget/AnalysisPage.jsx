@@ -69,12 +69,12 @@ const AnalysisPage = () => {
         </h2>
         <p className="text-sm text-slate-400 mt-1">{brief.coach?.summary || "No summary generated."}</p>
 
-        <div className="mt-4 grid grid-cols-2 xl:grid-cols-4 gap-3">
+        <div className="mt-4 grid grid-cols-2 lg:grid-cols-4 gap-3 text-center">
           {scoreTiles.map((tile) => (
-            <article key={tile.label} className="rounded-xl border border-slate-700 bg-slate-950/60 p-3">
-              <p className="text-xs text-slate-400 uppercase tracking-wider">{tile.label}</p>
-              <p className="text-2xl font-black text-white mt-1">{Number(tile.value).toFixed(0)}</p>
-              <div className="mt-2 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+            <article key={tile.label} className="rounded-xl border border-slate-700 bg-slate-950/60 p-3 flex flex-col items-center justify-center">
+              <p className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider truncate w-full">{tile.label}</p>
+              <p className="text-xl sm:text-2xl font-black text-white mt-1 leading-none">{Number(tile.value).toFixed(0)}</p>
+              <div className="mt-3 w-full h-1 bg-slate-800 rounded-full overflow-hidden">
                 <div className="h-full bg-cyan-400" style={{ width: `${Math.max(0, Math.min(100, tile.value))}%` }} />
               </div>
             </article>
@@ -82,15 +82,15 @@ const AnalysisPage = () => {
         </div>
       </section>
 
-      <section className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:p-5">
           <h3 className="font-semibold text-white">Top Spend Categories</h3>
-          <div className="h-64 mt-3">
+          <div className="h-60 sm:h-72 mt-3">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={brief.topCategories || []}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                <XAxis dataKey="category" stroke="#94a3b8" />
-                <YAxis stroke="#94a3b8" />
+                <XAxis dataKey="category" stroke="#94a3b8" tick={{fontSize: 10}} />
+                <YAxis stroke="#94a3b8" tick={{fontSize: 10}} />
                 <RechartsTooltip
                   formatter={(value) => money(value)}
                   contentStyle={{ backgroundColor: "#0f172a", border: "1px solid #334155", borderRadius: "10px" }}
@@ -105,15 +105,15 @@ const AnalysisPage = () => {
           <h3 className="font-semibold text-white flex items-center gap-2">
             <PieChartIcon size={16} className="text-purple-300" /> Category Breakdown
           </h3>
-          <div className="h-64 mt-3">
+          <div className="h-48 sm:h-72 mt-3">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={categorySummary}
                   cx="50%"
                   cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
+                  innerRadius={50}
+                  outerRadius={70}
                   paddingAngle={5}
                   dataKey="total"
                   nameKey="category"
@@ -130,18 +130,18 @@ const AnalysisPage = () => {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-center gap-2 sm:gap-4 mt-2">
             {categorySummary.map((entry, index) => (
-              <div key={entry.category} className="flex items-center gap-1.5 text-xs text-slate-300">
-                <span className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
-                {entry.category}: {money(entry.total)}
+              <div key={entry.category} className="flex items-center gap-2 text-[10px] sm:text-xs text-slate-300 bg-slate-950/40 p-1.5 rounded-lg border border-slate-800/50">
+                <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
+                <span className="truncate">{entry.category}</span>
               </div>
             ))}
           </div>
         </article>
       </section>
 
-      <section className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:p-5">
           <h3 className="font-semibold text-white flex items-center gap-2">
             <CheckCircle2 size={16} className="text-emerald-300" /> Wins

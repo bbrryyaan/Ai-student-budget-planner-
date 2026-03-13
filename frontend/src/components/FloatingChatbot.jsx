@@ -91,15 +91,16 @@ const FloatingChatbot = ({ mode }) => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 w-14 h-14 bg-cyan-600 hover:bg-cyan-500 rounded-full flex items-center justify-center shadow-lg shadow-cyan-900/50 transition-transform hover:scale-105 z-50 animate-bounce group"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-12 h-12 sm:w-14 sm:h-14 bg-cyan-600 hover:bg-cyan-500 rounded-full flex items-center justify-center shadow-lg shadow-cyan-900/50 transition-all hover:scale-105 active:scale-95 z-50 animate-bounce group"
         >
-          <Bot size={28} className="text-white group-hover:animate-pulse" />
+          <Bot size={24} className="text-white group-hover:animate-pulse sm:hidden" />
+          <Bot size={28} className="text-white group-hover:animate-pulse hidden sm:block" />
         </button>
       )}
 
       {/* Chat Popover */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 w-[360px] sm:w-[400px] h-[550px] max-h-[85vh] bg-slate-950 rounded-3xl border border-slate-800 shadow-2xl flex flex-col overflow-hidden z-50 animate-in slide-in-from-bottom-5 fade-in duration-300">
+        <div className="fixed inset-x-4 bottom-4 top-20 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-[400px] sm:h-[550px] bg-slate-950 rounded-3xl border border-slate-800 shadow-2xl flex flex-col overflow-hidden z-50 animate-in slide-in-from-bottom-5 fade-in duration-300">
           
           {/* Header */}
           <div className="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 p-4 flex items-center justify-between shrink-0">

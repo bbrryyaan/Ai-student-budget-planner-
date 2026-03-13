@@ -70,6 +70,7 @@ const BudgetLayout = () => {
   const [loading, setLoading] = useState(true);
   const [busyAction, setBusyAction] = useState(false);
   const [flash, setFlash] = useState({ type: "", text: "" });
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const flashTimeoutRef = useRef(null);
 
   const monthKey = useMemo(() => formatMonthKey(currentMonth), [currentMonth]);
@@ -197,16 +198,37 @@ const BudgetLayout = () => {
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <div className="w-full px-4 py-5 lg:px-6 xl:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] gap-5 xl:gap-6">
-          <aside className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 lg:p-5 h-fit lg:sticky lg:top-5">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 rounded-xl bg-indigo-600">
-                <Zap size={18} className="text-white" />
+          {/* Sidebar - Desktop (Sticky) / Mobile (Drawer) */}
+          <>
+            {/* Mobile Backdrop */}
+            {isMobileMenuOpen && (
+              <div 
+                className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm lg:hidden"
+                onClick={() => setIsMobileMenuOpen(false)}
+              />
+            )}
+
+            <aside className={`
+              fixed top-0 left-0 z-50 h-full w-[280px] bg-slate-900 border-r border-slate-800 p-5 transition-transform duration-300 lg:static lg:z-0 lg:w-auto lg:h-fit lg:rounded-2xl lg:border lg:bg-slate-900/80 lg:sticky lg:top-5 lg:translate-x-0
+              ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+            `}>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-indigo-600 shadow-lg shadow-indigo-500/20">
+                    <Zap size={18} className="text-white" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-white text-sm">Pocket Genie</p>
+                    <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{user?.name || "Student"}</p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 text-slate-400 hover:text-white lg:hidden"
+                >
+                  <X size={20} />
+                </button>
               </div>
-              <div>
-                <p className="font-bold text-white">Pocket Genie</p>
-                <p className="text-xs text-slate-400">{user?.name || "Student"}</p>
-              </div>
-            </div>
 
             <nav className="space-y-1.5 mb-6">
               {navItems.map((item) => (
@@ -285,29 +307,38 @@ const BudgetLayout = () => {
               </div>
             </div>
           </aside>
+          </>
 
           <main className="space-y-4 min-w-0">
-            <header className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:p-5">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <h1 className="text-2xl font-black text-white">Personal Budget Planner</h1>
-                  <p className="text-sm text-slate-400 mt-1">Navigate sections from the sidebar.</p>
+            <header className="rounded-2xl border border-slate-800 bg-slate-900/80 p-3 sm:p-5">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <button 
+                    onClick={() => setIsMobileMenuOpen(true)}
+                    className="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 hover:text-white lg:hidden"
+                  >
+                    <Menu size={20} />
+                  </button>
+                  <div className="min-w-0">
+                    <h1 className="text-lg sm:text-2xl font-black text-white truncate">Personal Budget</h1>
+                    <p className="hidden sm:block text-xs text-slate-400 mt-0.5">Navigate sections from the sidebar.</p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2">
                   <button
                     onClick={() => shiftMonth(-1)}
-                    className="p-2 rounded-xl border border-slate-700 bg-slate-800"
+                    className="p-1.5 sm:p-2 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 transition-colors"
                   >
-                    <ChevronLeft size={15} />
+                    <ChevronLeft size={14} className="sm:w-[15px] sm:h-[15px]" />
                   </button>
-                  <div className="px-3 py-2 rounded-xl border border-slate-700 bg-slate-950 text-sm font-semibold min-w-[160px] text-center">
+                  <div className="px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl border border-slate-700 bg-slate-950 text-[10px] sm:text-sm font-bold min-w-[100px] sm:min-w-[160px] text-center text-white truncate">
                     {monthTitle(currentMonth)}
                   </div>
                   <button
                     onClick={() => shiftMonth(1)}
-                    className="p-2 rounded-xl border border-slate-700 bg-slate-800"
+                    className="p-1.5 sm:p-2 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 transition-colors"
                   >
-                    <ChevronRight size={15} />
+                    <ChevronRight size={14} className="sm:w-[15px] sm:h-[15px]" />
                   </button>
                 </div>
               </div>
