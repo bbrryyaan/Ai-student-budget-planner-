@@ -29,6 +29,7 @@ import api from "../../lib/api";
 import { formatMonthKey, monthTitle } from "../../lib/budget";
 import { useAuth } from "../../context/useAuth";
 import FloatingChatbot from "../../components/FloatingChatbot";
+import BottomNav from "../../components/BottomNav";
 
 const navItems = [
   { to: "/dashboard/overview", label: "Overview", icon: LayoutDashboard },
@@ -309,8 +310,8 @@ const BudgetLayout = () => {
           </aside>
           </>
 
-          <main className="space-y-4 min-w-0">
-            <header className="rounded-2xl border border-slate-800 bg-slate-900/80 p-3 sm:p-5">
+          <main className="space-y-4 min-w-0 pb-20 lg:pb-0">
+            <header className="rounded-2xl border border-slate-800 bg-slate-900/80 p-3 sm:p-5 sticky top-0 z-30 backdrop-blur-md">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <button 
@@ -367,8 +368,13 @@ const BudgetLayout = () => {
         </div>
       </div>
       
-      {/* Global AI Floating Chatbot */}
-      <FloatingChatbot mode={entryMode} />
+      {/* Global AI Floating Chatbot - Hidden on mobile if redundant with BottomNav */}
+      <div className="hidden lg:block">
+        <FloatingChatbot mode={entryMode} />
+      </div>
+
+      {/* Mobile Bottom Navigation */}
+      <BottomNav />
     </div>
   );
 };

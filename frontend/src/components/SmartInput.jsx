@@ -121,44 +121,45 @@ const SmartInput = ({ onTransactionAdded, entryMode }) => {
   };
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:p-5">
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-        <div>
-          <p className="text-sm font-semibold text-white flex items-center gap-2">
-            <Sparkles size={16} className="text-cyan-400" /> Add Transaction
+    <section className="rounded-2xl border border-slate-800 bg-slate-900/80 p-3 sm:p-5">
+      <div className="flex items-center justify-between gap-3 mb-4">
+        <div className="min-w-0">
+          <p className="text-sm font-bold text-white flex items-center gap-2">
+            <Sparkles size={16} className="text-cyan-400" /> 
+            <span className="truncate">Add Entry</span>
           </p>
-          <p className="text-xs text-slate-400 mt-1">Track both income and expenses with optional AI assist.</p>
+          <p className="hidden sm:block text-xs text-slate-400 mt-1">Track income or expenses with AI assist.</p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <button
             type="button"
             onClick={handleAiSuggest}
             disabled={aiLoading}
-            className="px-3 py-2 rounded-xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-xs sm:text-sm flex items-center gap-2 disabled:opacity-60"
+            className="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-[10px] sm:text-sm flex items-center gap-1.5 disabled:opacity-60"
           >
-            {aiLoading ? <Loader2 size={14} className="animate-spin" /> : <Wand2 size={14} />} Suggest
+            {aiLoading ? <Loader2 size={12} className="animate-spin" /> : <Wand2 size={12} />} Suggest
           </button>
           <button
             type="button"
             onClick={() => setUseAi((prev) => !prev)}
-            className={`px-3 py-2 rounded-xl border text-xs sm:text-sm ${
+            className={`px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl border text-[10px] sm:text-sm font-bold ${
               useAi
                 ? "border-indigo-500/40 bg-indigo-500/10 text-indigo-300"
                 : "border-slate-700 bg-slate-800 text-slate-300"
             }`}
           >
-            AI Save: {useAi ? "ON" : "OFF"}
+            AI: {useAi ? "ON" : "OFF"}
           </button>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-3">
+      <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3">
+        <div className="grid grid-cols-2 lg:grid-cols-6 gap-2 sm:gap-3">
           <select
             value={type}
             onChange={(e) => setType(e.target.value)}
-            className="lg:col-span-1 bg-slate-950 border border-slate-700 rounded-xl py-2.5 px-3 text-sm"
+            className="col-span-1 bg-slate-950 border border-slate-700 rounded-xl py-2 px-3 text-xs sm:text-sm text-white outline-none focus:border-indigo-500/50"
             disabled={loading}
           >
             <option value="expense">Expense</option>
@@ -166,21 +167,21 @@ const SmartInput = ({ onTransactionAdded, entryMode }) => {
           </select>
 
           <input
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Description"
-            className="lg:col-span-2 bg-slate-950 border border-slate-700 rounded-xl py-2.5 px-3 text-sm"
-            disabled={loading}
-          />
-
-          <input
             type="number"
             min="0.01"
             step="0.01"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            placeholder="Amount"
-            className="lg:col-span-1 bg-slate-950 border border-slate-700 rounded-xl py-2.5 px-3 text-sm"
+            placeholder="Amount (₹)"
+            className="col-span-1 bg-slate-950 border border-slate-700 rounded-xl py-2 px-3 text-xs sm:text-sm text-white outline-none focus:border-indigo-500/50"
+            disabled={loading}
+          />
+
+          <input
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Description (e.g. Lunch)"
+            className="col-span-2 lg:col-span-2 bg-slate-950 border border-slate-700 rounded-xl py-2 px-3 text-xs sm:text-sm text-white outline-none focus:border-indigo-500/50"
             disabled={loading}
           />
 
@@ -188,24 +189,24 @@ const SmartInput = ({ onTransactionAdded, entryMode }) => {
             type="date"
             value={transactionDate}
             onChange={(e) => setTransactionDate(e.target.value)}
-            className="lg:col-span-1 bg-slate-950 border border-slate-700 rounded-xl py-2.5 px-3 text-sm"
+            className="col-span-1 lg:col-span-1 bg-slate-950 border border-slate-700 rounded-xl py-2 px-3 text-xs sm:text-sm text-white outline-none focus:border-indigo-500/50"
             disabled={loading}
           />
 
           <button
             type="submit"
             disabled={loading}
-            className="lg:col-span-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 rounded-xl py-2.5 px-3 text-sm font-semibold"
+            className="col-span-1 lg:col-span-1 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 rounded-xl py-2 px-3 text-xs sm:text-sm font-black text-white shadow-lg shadow-indigo-900/20 active:scale-95 transition-all"
           >
-            {loading ? "Saving..." : "Save"}
+            {loading ? "..." : "Save"}
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="bg-slate-950 border border-slate-700 rounded-xl py-2.5 px-3 text-sm"
+            className="bg-slate-950 border border-slate-700 rounded-xl py-2 px-3 text-xs sm:text-sm text-white outline-none focus:border-indigo-500/50"
             disabled={loading || useAi}
           >
             {categoryOptions.map((option) => (
@@ -218,29 +219,30 @@ const SmartInput = ({ onTransactionAdded, entryMode }) => {
           <select
             value={paymentMode}
             onChange={(e) => setPaymentMode(e.target.value)}
-            className="bg-slate-950 border border-slate-700 rounded-xl py-2.5 px-3 text-sm"
+            className="bg-slate-950 border border-slate-700 rounded-xl py-2 px-3 text-xs sm:text-sm text-white outline-none focus:border-indigo-500/50"
             disabled={loading}
           >
             <option value="upi">UPI / Bank</option>
             <option value="cash">Cash</option>
-            <option value="savings">Savings Account</option>
+            <option value="savings">Savings</option>
           </select>
 
-          <label className="flex items-center gap-2 bg-slate-950 border border-slate-700 rounded-xl py-2.5 px-3 text-sm">
+          <label className="flex items-center gap-2 bg-slate-950 border border-slate-700 rounded-xl py-2 px-3 text-[10px] sm:text-sm text-slate-400 cursor-pointer hover:border-slate-600 transition-colors">
             <input
               type="checkbox"
               checked={isEssential}
               onChange={(e) => setIsEssential(e.target.checked)}
               disabled={loading || useAi || type !== "expense"}
+              className="accent-indigo-500"
             />
-            Essential
+            {isEssential ? <span className="text-white font-bold">Essential</span> : "Essential"}
           </label>
 
           <input
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            placeholder="Note (optional)"
-            className="md:col-span-2 bg-slate-950 border border-slate-700 rounded-xl py-2.5 px-3 text-sm"
+            placeholder="Note"
+            className="col-span-1 md:col-span-2 lg:col-span-1 bg-slate-950 border border-slate-700 rounded-xl py-2 px-3 text-xs sm:text-sm text-white outline-none focus:border-indigo-500/50"
             disabled={loading || useAi}
           />
         </div>

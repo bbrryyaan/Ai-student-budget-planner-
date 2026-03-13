@@ -118,27 +118,27 @@ const MoneyBuddyPage = () => {
   }, [chatHistory]);
 
   return (
-    <div className="flex h-[calc(100vh-160px)] w-full gap-4 relative">
-      {/* Sidebar - Desktop */}
+    <div className="flex h-[calc(100vh-180px)] lg:h-[calc(100vh-160px)] w-full gap-4 relative">
+      {/* Sidebar - Desktop Only */}
       <div className={`
-        fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm md:relative md:bg-transparent md:backdrop-blur-none md:inset-auto md:z-0
-        transition-all duration-300 ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible md:opacity-100 md:visible'}
-        md:w-72 md:flex md:shrink-0
+        fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm lg:relative lg:bg-transparent lg:backdrop-blur-none lg:inset-auto lg:z-0
+        transition-all duration-300 ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible lg:opacity-100 lg:visible'}
+        lg:w-72 lg:flex lg:shrink-0
       `}>
         <div className={`
-          absolute left-0 top-0 bottom-0 w-72 bg-slate-950 flex flex-col border border-slate-800 md:rounded-3xl shadow-2xl transition-transform duration-300
-          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+          absolute left-0 top-0 bottom-0 w-72 bg-slate-950 flex flex-col border border-slate-800 lg:rounded-3xl shadow-2xl transition-transform duration-300
+          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}>
           <div className="p-4 border-b border-slate-800 flex items-center justify-between">
             <h3 className="text-white font-bold flex items-center gap-2">
               <MessageSquare size={18} className="text-cyan-400" />
               Chat History
             </h3>
-            <button onClick={() => setIsSidebarOpen(false)} className="md:hidden p-1 text-slate-400 hover:text-white">
+            <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden p-1 text-slate-400 hover:text-white">
               <X size={20} />
             </button>
           </div>
-          
+
           <div className="p-4">
             <button 
               onClick={startNewChat}
@@ -174,28 +174,20 @@ const MoneyBuddyPage = () => {
                 </button>
               </div>
             ))}
-            {chats.length === 0 && !isInitialLoading && (
-              <div className="flex flex-col items-center justify-center py-10 px-4 text-center">
-                <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center mb-3">
-                  <Bot size={24} className="text-slate-700" />
-                </div>
-                <p className="text-xs text-slate-500">No chat history yet.<br/>Start a new conversation!</p>
-              </div>
-            )}
           </div>
         </div>
       </div>
 
       {/* Main Chat Area */}
-      <div className="flex flex-col flex-1 bg-slate-950 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden relative min-w-0">
+      <div className="flex flex-col flex-1 bg-slate-950 lg:rounded-3xl border-x lg:border border-slate-800 shadow-2xl overflow-hidden relative min-w-0">
         {/* Header */}
-        <div className="bg-gradient-to-r from-slate-900 via-slate-900 to-cyan-900/20 backdrop-blur-md border-b border-slate-800 p-4 flex items-center justify-between shrink-0 z-10 sticky top-0">
-          <div className="flex items-center gap-4">
+        <div className="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 p-3 sm:p-4 flex items-center justify-between shrink-0 z-10 sticky top-0">
+          <div className="flex items-center gap-3 sm:gap-4">
             <button 
               onClick={() => setIsSidebarOpen(true)}
-              className="md:hidden p-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-slate-400 transition-colors"
+              className="lg:hidden p-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-slate-400 transition-colors"
             >
-              <Menu size={20} />
+              <Menu size={18} />
             </button>
             <div className="relative group">
               <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">

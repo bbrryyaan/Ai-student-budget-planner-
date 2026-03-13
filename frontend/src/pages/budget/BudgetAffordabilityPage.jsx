@@ -269,32 +269,34 @@ const BudgetAffordabilityPage = () => {
 
           {/* AI Decision Result */}
           {affordabilityResult && (
-            <div className="mt-8 bg-slate-950 border border-slate-800 rounded-3xl p-6 relative z-10 animate-in zoom-in duration-300">
-               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                  <div className="space-y-2">
-                     <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest ${
+            <div className="mt-6 bg-slate-950 border border-slate-800 rounded-3xl p-5 relative z-10 animate-in zoom-in duration-300">
+               <div className="flex flex-col gap-5">
+                  <div className="space-y-3">
+                     <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${
                        affordabilityResult.decision.canAfford ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'
                      }`}>
                         {affordabilityResult.decision.canAfford ? 'Affordable' : 'Too Risky'} 
                         <span>•</span> 
                         {affordabilityResult.decision.confidence} confidence
                      </div>
-                     <h3 className="text-xl font-black text-white">Coaches Verdict:</h3>
-                     <p className="text-slate-300 italic">"{affordabilityResult.decision.summary}"</p>
+                     <div>
+                        <h3 className="text-lg font-black text-white">Coach Verdict:</h3>
+                        <p className="text-sm text-slate-300 italic leading-relaxed mt-1">"{affordabilityResult.decision.summary}"</p>
+                     </div>
                   </div>
 
-                  <div className="shrink-0 flex gap-3">
+                  <div className="flex gap-2 w-full">
                      <button 
                        onClick={handleAddToWishlist}
-                       className="px-6 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold border border-slate-700 transition-all"
+                       className="flex-1 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold border border-slate-700 transition-all active:scale-95"
                      >
-                       Park in Radar
+                       Park for Later
                      </button>
                      <button 
                         onClick={handleCreateSmartTransaction}
-                        className="px-6 py-3 rounded-2xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition-all shadow-lg shadow-cyan-900/20"
+                        className="flex-1 py-3.5 rounded-2xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition-all shadow-lg shadow-cyan-900/20 active:scale-95"
                      >
-                        Force Buy
+                        Confirm Buy
                      </button>
                   </div>
                </div>
